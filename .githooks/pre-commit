@@ -1,0 +1,3 @@
+#!/bin/sh
+git log main --pretty=oneline | wc -l | xargs > build_number
+git add build_number
