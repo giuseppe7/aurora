@@ -1,0 +1,2 @@
+# TYPE example_counter counter
+example_counter 100

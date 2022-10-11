@@ -13,6 +13,8 @@ services:
       - "2112"
     networks:
       - aurora-net
+    volumes:
+      - ../test/data:/test/data
 
   prometheus:
     image: prom/prometheus:latest

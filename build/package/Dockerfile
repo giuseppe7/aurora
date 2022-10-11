@@ -24,4 +24,5 @@ RUN cp /build/aurora .
 FROM scratch
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /dist/${appName} /
+COPY --from=builder /build/test/data /test/data
 ENTRYPOINT ["/aurora"]

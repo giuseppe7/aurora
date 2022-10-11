@@ -9,8 +9,8 @@ import (
 	"strconv"
 	"sync"
 	"syscall"
-	"time"
 
+	"github.com/giuseppe7/aurora/internal/workers"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
@@ -57,13 +57,13 @@ func main() {
 	// Set up observability.
 	initObservability()
 
-	go func() {
-		for {
-			time.Sleep(time.Second)
-		}
-	}()
+	// Set up file watcher to detect and create metrics.
+	path := "./test/data/"                     // TODO: Pull from parameters.
+	w := workers.NewMetricsFolderWatcher(path) // TODO: Singleton?
+	w.WatchAndEmit()
 
 	// Function and waiter to wait for the OS interrupt and do any clean-up.
+	log.Println("Running.")
 	go func() {
 		<-c
 		fmt.Println("\r")

@@ -25,6 +25,7 @@ func TestObservability(t *testing.T) {
 	apiEndpoint := "/metrics"
 	url := fmt.Sprintf("http://0.0.0.0:2112/%s", apiEndpoint)
 
+	time.Sleep(time.Second * 1) // Allow it to boot up
 	req, _ := http.NewRequest("GET", url, nil)
 	resp, err := httpClient.Do(req)
 	if err != nil {

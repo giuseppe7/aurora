@@ -1,0 +1,2 @@
+# TYPE test_random_gauge gauge
+test_random_gauge 204
