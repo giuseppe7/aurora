@@ -16,6 +16,7 @@ import (
 )
 
 const applicationNamespace = "aurora"
+const defaultWatchedFolder = "./test/data"
 
 // Variable to be set by the Go linker at build time.
 var version string
@@ -46,7 +47,7 @@ func initObservability() {
 
 func main() {
 	log.Println("Coming online...")
-	log.Print(fmt.Sprintf("Version: %v\n", version))
+	log.Println("Version:", version)
 
 	// Channel to be aware of an OS interrupt like Control-C.
 	var waiter sync.WaitGroup
@@ -58,7 +59,13 @@ func main() {
 	initObservability()
 
 	// Set up file watcher to detect and create metrics.
-	path := "./test/data/"                     // TODO: Pull from parameters.
+	path := defaultWatchedFolder
+	if os.Getenv("WATCHED_DIR") != "" {
+		path = os.Getenv(("WATCHED_DIR"))
+	}
+
+	// Set up file watcher to detect and create metrics.
+	log.Println("Folder being watched:", path)
 	w := workers.NewMetricsFolderWatcher(path) // TODO: Singleton?
 	w.WatchAndEmit()
 

@@ -13,8 +13,8 @@ services:
       - "2112"
     networks:
       - aurora-net
-    volumes:
-      - ../test/data:/test/data
+    environment:
+      - WATCHED_DIR=/watched
 
   prometheus:
     image: prom/prometheus:latest

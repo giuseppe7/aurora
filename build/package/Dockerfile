@@ -19,10 +19,13 @@ RUN go build -buildvcs=false -ldflags "-X main.version=`cat build_number``date -
 # Move to /dist directory as the place for resulting binary folder and copy the binary.
 WORKDIR /dist
 RUN cp /build/aurora .
+RUN mkdir -p watched
 
 # Build the smaller image
 FROM scratch
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-COPY --from=builder /dist/${appName} /
-COPY --from=builder /build/test/data /test/data
+COPY --from=builder /dist/aurora /
+COPY --from=builder /dist/watched /watched
+
+ENV WATCHED_DIR "/watched"
 ENTRYPOINT ["/aurora"]

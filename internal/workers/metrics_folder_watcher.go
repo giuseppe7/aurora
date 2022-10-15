@@ -85,15 +85,15 @@ func (worker *MetricsFolderWatcher) respondToEvent(event fsnotify.Event) {
 
 	if event.Op == fsnotify.Chmod {
 		// Ignore chmod for now.
-	} else if event.Op == fsnotify.Rename {
+	} else if event.Op&fsnotify.Rename == fsnotify.Rename {
 		// Ignore rename for now.
-	} else if event.Op == fsnotify.Create {
+	} else if event.Op&fsnotify.Create == fsnotify.Create {
 		log.Printf("Create: %s %s\n", event.Name, event.Op)
 		worker.parseAndUpsert(event)
-	} else if event.Op == fsnotify.Write {
+	} else if event.Op&fsnotify.Write == fsnotify.Write {
 		log.Printf("Write: %s %s\n", event.Name, event.Op)
 		worker.parseAndUpsert(event)
-	} else if event.Op == fsnotify.Remove {
+	} else if event.Op&fsnotify.Remove == fsnotify.Remove {
 		// Ignore remove for now.
 	} else {
 		log.Printf("Unknown: %s %s\n", event.Name, event.Op)
